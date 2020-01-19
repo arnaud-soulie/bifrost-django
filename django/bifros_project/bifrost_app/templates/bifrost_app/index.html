@@ -39,9 +39,9 @@
 
     <div class=" ">
       <div class="row no-gutters">
-        {% for number in numbers %}
-          <a href="https://www.belial.fr/revue/bifrost-{{number}}" target=" _blank" class="col-lg-2 col-md-3 col-sm-6 gallery-item ">
-              <img src="{{ STATIC_URL }}covers/{{ number }}.jpg" alt="" class="img-fluid">
+        {% for volume in volumes %}
+          <a href="https://www.belial.fr/revue/bifrost-{{volume.number}}" target=" _blank" class="col-lg-2 col-md-3 col-sm-6 gallery-item ">
+              <img src="{{ STATIC_URL }}covers/{{ volume.number }}.jpg" alt="" class="img-fluid">
           </a>
         {% endfor %}
 
