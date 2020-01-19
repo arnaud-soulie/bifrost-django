@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 {% load static %}
  {% get_static_prefix as STATIC_URL %}
+
 <html lang="en" dir="ltr">
   <head>
     <meta charset="utf-8">
@@ -29,13 +30,21 @@
         <div class="navbar-header">
           <a class="navbar-brand" href="#">Bifrost</a>
         </div>
-        <form class="form-inline">
-    <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
-    <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+        <form class="form-inline"  method="POST">
+          {% csrf_token %}
+    <input class="form-control mr-sm-2" type="search" name="search" placeholder="Search" aria-label="Search">
+    <button class="btn btn-outline-primary my-2 my-sm-0" type="submit">Search</button>
   </form>
         <ul class="nav navbar-nav">
         </ul>
       </nav>
+
+  {% if searching %}
+  <div class="container-fluid bg-light text-center">
+Filtre : {{searching}}
+  </div>
+&nbsp
+  {% endif %}
 
     <div class=" ">
       <div class="row no-gutters">
