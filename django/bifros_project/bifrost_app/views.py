@@ -2,6 +2,7 @@ from django.shortcuts import render
 from bifrost_app.models import Volume
 from django.db.models import Q
 from bifrost_app.forms import NewVolumeForm
+from django.http import HttpResponseRedirect
 
 # Create your views here.
 def index(request):
@@ -36,7 +37,7 @@ def add_volume(request):
         form=NewVolumeForm(request.POST)
         if form.is_valid():
             form.save(commit=True)
-            return index(request)
+            return HttpResponseRedirect('/')
         else:
             print("ERROR: Invalid form")
     print("passe dans add_volume")
