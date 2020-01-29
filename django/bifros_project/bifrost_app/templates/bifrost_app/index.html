@@ -6,6 +6,8 @@
   <head>
     <meta charset="utf-8">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+      <link rel="stylesheet" type="text/css" media="all" href="{% static "styles.css" %}s">
 <style media="screen">
 .gallery-item
 {
@@ -28,9 +30,9 @@
 
       <nav class="navbar navbar-dark bg-dark">
         <div class="navbar-header">
-          <a class="navbar-brand" href="#">Bifrost</a>
+          <a class="navbar-brand" id="demo" href="#">Bifrost</a>
         </div>
-        <form class="form-inline"  method="POST">
+        <form class="form-inline" method="POST">
           {% csrf_token %}
     <input class="form-control mr-sm-2" type="search" name="search" placeholder="Search" aria-label="Search">
     <button class="btn btn-outline-primary my-2 my-sm-0" type="submit">Search</button>
@@ -39,6 +41,28 @@
         </ul>
       </nav>
 
+      <div id="w">
+          <div id="content">
+            <h1>Hover Details Panel Demo (jQuery)</h1>
+            <p><a href="demo-css/index.html">&larr; View the CSS3 Demo</a></p>
+            <div class="thumbs">
+              <ul class="clearfix">
+                <li><a href="http://pixelsdaily.com/resources/photoshop/psds/social-hx-icons/" target="_blank"><img src="img/social-hx-icons-thumb.jpg" data-fullsize="img/social-hx-icons.jpg" class="thumbimg" alt="Social HX Icons" data-date="Nov 12th, 2013"></a><meta class="desc" content="We love these little social media icons. With just a hint of depth and shadow, they make a change from the norm."></li>
+                <li><a href="http://pixelsdaily.com/resources/photoshop/psds/message-app-interface/" target="_blank"><img src="img/message-app-interface-thumb.jpg" data-fullsize="img/message-app-interface.jpg" class="thumbimg" alt="Message App Interface" data-date="Nov 6th, 2013"></a><meta class="desc" content="Delight is in the details, and this is a delightful little interface. Subtle gradients, shadows and lines make for something that is remarkably tactile and click-able. A great start for a messaging/communication widget or app interface."></li>
+                <li><a href="http://pixelsdaily.com/resources/photoshop/psds/flat-toggles-and-sliders/" target="_blank"><img src="img/flat-toggles-sliders-thumb.jpg" data-fullsize="img/flat-toggles-sliders.jpg" class="thumbimg" alt="Flat Toggles and Sliders" data-date="Oct 18th, 2013"></a><meta class="desc" content="This set includes common UI components such as sliders, toggles, and widgets. Plenty of variety here to ensure you have exactly the right type of form in your design."></li>
+              </ul>
+            </div>
+
+            <!-- setup details pane template -->
+            <div id="details-pane" style="display: none;">
+              <h3 class="title"></h3>
+              <p class="desc"></p>
+              <div class="big-img"><a href="" target="_blank"><img src=""></a></div>
+            </div><!-- @end #details-pane
+          </div><!-- @end #content -->
+        </div><!-- @end #w -->
+
+
   {% if searching %}
   <div class="container-fluid bg-light text-center">
 Filtre : {{searching}}
@@ -46,14 +70,69 @@ Filtre : {{searching}}
 &nbsp
   {% endif %}
 
-    <div class=" ">
+    <div class="">
       <div class="row no-gutters">
         {% for volume in volumes %}
           <a href="https://www.belial.fr/revue/bifrost-{{volume.number}}" target=" _blank" class="col-lg-2 col-md-3 col-sm-6 gallery-item ">
-              <img src="{{ STATIC_URL }}covers/{{ volume.number }}.jpg" alt="" class="img-fluid">
+              <img src="media/{{ volume.cover }}" onerror="this.src='/static/covers/unknown.jpg';" alt="{{ STATIC_URL }}covers/unknown.jpg" class="img-fluid">
           </a>
         {% endfor %}
 
       </div>
+      <!-- setup details pane template -->
+
   </body>
+  <script src="{% static "script.js" %}" charset="utf-8"/>
+
+<script type="text/javascript">
+$(function(){
+  $('.thumbs ul li img').on('mouseover', function(e){
+    var dpane      = $('#details-pane');
+    var dpanetitle = $('#details-pane .title');
+    var dpanedesc  = $('#details-pane .desc');
+    var newtitle   = $(this).attr('alt');
+    var newdate    = $(this).attr('data-date');
+    var newdesc    = $(this).parent().next('meta.desc').attr('content');
+    var newimg     = $(this).attr('data-fullsize');
+    var linkurl    = $(this).parent().attr('href');
+
+    var position = $(this).offset();
+    var imgwidth = $(this).width();
+    var ycoord   = position.top;
+    if(position.left / $(window).width() >= 0.5) {
+      var xcoord = position.left - 530;
+      // details pane is 530px fixed width
+      // if the img position is beyond 50% of the page, we move the pane to the left side
+    } else {
+      var xcoord = position.left + imgwidth;
+    }
+
+    $('.big-img a').attr('href',linkurl);
+    $('.big-img a img').attr('src',newimg);
+
+    var titlehtml = newtitle + '<span>('+newdate+')</span>';
+
+    dpanetitle.html(titlehtml);
+    dpanedesc.html(newdesc);
+    dpane.css({ 'left': xcoord, 'top': ycoord, 'display': 'block'});
+
+  }).on('mouseout', function(e){
+    $('#details-pane').css('display','none');
+  });
+
+  // when hovering the details pane keep displayed, otherwise hide
+  $('#details-pane').on('mouseover', function(e){
+    $(this).css('display','block');
+  });
+  $('#details-pane').on('mouseout', function(e){
+    //this is the original element the event handler was assigned to
+    var e = e.toElement || e.relatedTarget;
+    if (e.parentNode == this || e.parentNode.parentNode == this || e.parentNode.parentNode.parentNode == this || e == this || e.nodeName == 'IMG') {
+      return;
+    }
+    $(this).css('display','none');
+    //console.log(e.nodeName)
+  });
+});
+</script>
 </html>

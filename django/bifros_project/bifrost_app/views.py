@@ -19,7 +19,7 @@ def index(request):
         #Filter
         searching=(request.POST.get('search') or "")
         print("Valeur cherchée : "+searching)
-        volumes_list=Volume.objects.filter(Q(guest__icontains=searching)).order_by('-number')
+        volumes_list=Volume.objects.filter(Q(summary__icontains=searching)).order_by('-number')
         #volumes_list=volumes_list.filter(guest__icontains=request.POST.get('search'))
         print(volumes_list)
 
@@ -35,7 +35,17 @@ def add_volume(request):
 
     if request.method == "POST":
         form=NewVolumeForm(request.POST)
+        print("Form valid..")
+        print(request.FILES)
         if form.is_valid():
+
+            # Check if they provided a profile picture
+            if 'cover_pics' in request.FILES:
+
+                print('found cover')
+                # If yes, then grab it from the POST form reply
+                form.cover_pics = request.FILES['cover_pics']
+
             form.save(commit=True)
             return HttpResponseRedirect('/')
         else:
