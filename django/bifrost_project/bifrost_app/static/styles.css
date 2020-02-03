@@ -14,12 +14,12 @@ html, body, div, span, applet, object, iframe, h1, h2, h3, h4, h5, h6, p, blockq
   box-sizing: border-box;
 }
 html { overflow-y: scroll; overflow-x: hidden; }
-body { 
-  background: #f0f0f0; 
+body {
+  background: #f0f0f0;
   font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
   color: #313131;
-  font-size: 62.5%; 
-  line-height: 1; 
+  font-size: 62.5%;
+  line-height: 1;
   padding-bottom: 150px;
 }
 
@@ -41,27 +41,27 @@ body {
 }
 :-ms-input-placeholder { /* Internet Explorer 10+ */
   color: #ccc !important;
-  font-style: italic;  
+  font-style: italic;
 }
 
-br { display: block; line-height: 2.2em; } 
+br { display: block; line-height: 2.2em; }
 
 article, aside, details, figcaption, figure, footer, header, hgroup, menu, nav, section { display: block; }
 ol, ul { list-style: none; }
 
-input, textarea { 
+input, textarea {
   -webkit-font-smoothing: antialiased;
   -webkit-text-size-adjust: 100%;
   -ms-text-size-adjust: 100%;
   -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;
   box-sizing: border-box;
-  outline: none; 
+  outline: none;
 }
 
 blockquote, q { quotes: none; }
 blockquote:before, blockquote:after, q:before, q:after { content: ''; content: none; }
-strong { font-weight: bold; } 
+strong { font-weight: bold; }
 
 table { border-collapse: collapse; border-spacing: 0; }
 img { border: 0; max-width: 100%; }
@@ -109,11 +109,11 @@ h1:after {
   vertical-align: middle;
   background: #f0f0f0;
 }
-h1:before {    
+h1:before {
   left: -.5em;
   margin: 0 0 0 -50%;
 }
-h1:after {    
+h1:after {
   left: .5em;
   margin: 0 -50% 0 0;
 }
@@ -219,6 +219,6 @@ a:hover { text-decoration: underline; }
 /** clearfix **/
 .clearfix:after { content: "."; display: block; clear: both; visibility: hidden; line-height: 0; height: 0; }
 .clearfix { display: inline-block; }
- 
+
 html[xmlns] .clearfix { display: block; }
 * html .clearfix { height: 1%; }

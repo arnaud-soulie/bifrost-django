@@ -5,7 +5,7 @@ os.environ.setdefault('DJANGO_SETTINGS_MODULE','bifrost_project.settings')
 import django
 django.setup()
 
-from django.core.files import File
+from django.core.files.images import ImageFile
 from bifrost_app.models import Volume
 
 
@@ -17,14 +17,15 @@ def populate(N=5,path="D:\covers"):
         print("Opening "+os.path.join(path,str(num)+".txt"))
         with open(os.path.join(path,str(num)+".txt"),'r',encoding='utf8') as fsum:
             sum=fsum.read()
-            print("Summary: "+sum)
+            #print("Summary: "+sum)
         #Creates the new volume entry
         vol = Volume.objects.get_or_create(summary=sum,number=num,)[0]
-        #vol.cover = File(open(os.path.join(path,str(num)+".jpg")), 'rb')
-        #vol.save()
-
+        print("Opening: "+str(os.path.join(path,str(num)))+".jpg")
+        djangoFile = ImageFile(open(os.path.join(path,str(num)+".jpg"),'rb') )
         print("Cover: ")
         print(vol.cover)
+        vol.cover.save(str(num)+".jpg",djangoFile,save=True)
+
 
 if __name__ == '__main__':
     print('Populating script!')
